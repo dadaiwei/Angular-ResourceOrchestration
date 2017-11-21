@@ -1,0 +1,82 @@
+<div class="container-fluid container-layout">
+    <div class="operation my-font">
+        <div style="display: inline-block">
+            <button type="button" class="btn btn-default btn-info" ng-click="refresh()">
+                <span class="iconfont icon-shuaxin"></span>
+            </button>
+            <button type="type" class="btn btn-default btn-info" ng-show="isCreateModal" ng-click="goCreate()"><span style="font-size:16px;">+</span> 创建模板</button>
+            <button type="button" class="btn btn-default btn-info" ng-click="remove()">
+                <span class="iconfont icon-qingkong" style="vertical-align: -1px;" ng-disabled=true></span> 删除
+            </button>
+        </div>
+        <div style="display: inline-block; float: right;">
+            <form class="form-inline" ng-submit="searchButton(searchOption, searchValue)">
+                <select class="form-control" ng-model="searchOption" value="searchOption" ng-init="searchOption=searchOptions[0].value">
+                    <option ng-repeat="s in searchOptions">{{s.value}}</option>
+                </select>
+                <input type="text" class="form-control" ng-value="searchValue" ng-model="searchValue">
+                <button type="submit" class="btn btn-default btn-info">搜索</button>
+            </form>
+        </div>
+    </div>
+    <div class="table-responsive table-layout">
+        <table class="table table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th style="width: 100px;">
+                            <input type="checkbox" ng-model="allCheck" value="{{allCheck}}" ng-click="selectAll(allCheck, contents, pageIndex, pageEntry)" style="cursor:pointer;">
+                    </th>
+                    <th ng-repeat="h in headers">{{h.name}}</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="c in contents | pageFilter: pageIndex : pageEntry">
+                    <th style="width: 100px;">
+                        <input type="checkbox" ng-model="c.checkbox" value="c.checkbox" style="cursor:pointer;">
+                    </th>
+                    <td ng-repeat="h in headers">
+                        <a ng-if="h.link" style="color:#337ab7; cursor: pointer;text-decoration: none" ng-click="tooltipShow($event)">{{c[h.field]}}</a>
+                        <p ng-if="!h.link">{{c[h.field]}}</p>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="loading">
+        <p>正在加载....</p>
+    </div>
+    <div id="page" class="form-inline">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="pageShow">
+                        <label>
+                            显示<select class="form-control" ng-change="changeEntry(entryValue)" ng-model="entryValue" value="entryValue" ng-init="entryValue=entryOptions[0]">
+                                <option ng-repeat="e in entryOptions">{{e}}</option>
+                            </select>行/页
+                        </label>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="paging">
+                        <ul class="pagination">
+                            <li ng-disabled="true" ng-class="{'disabled': pageButtons[0].active}">
+                                <a ng-click="goPageButton(pageIndex - 1)">
+                                    上一页
+                                </a>
+                            </li>
+                            <li ng-repeat="pageButton in pageButtons"  ng-class="{active: pageButton.active}">
+                                <a ng-click="goPageButton(pageButton.index)">{{pageButton.name}}</a>
+                            </li>
+                            <li ng-class="{'disabled': pageButtons[pageButtons.length - 1].active}">
+                                <a ng-click="goPageButton(pageIndex + 1)">
+                                    下一页
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

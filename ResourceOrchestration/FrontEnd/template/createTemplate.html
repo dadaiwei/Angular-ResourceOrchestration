@@ -1,0 +1,159 @@
+   <div ng-controller="createTemplateCtrl" style="margin-top: -15px;">
+       <div class="container-fluid">
+           <div class="row">
+               <div class="col-lg-2">
+                   <div class="resource">
+                       <ul class="resource-ul">
+                           <li class="resource-li" style="cursor:pointer; text-indent: 10px;" ng-click="toggleList($event)">
+                               <a>计算与网络</a>
+                               <ul class="resource-detail" style="display: block;" ng-init="resourceHide('.resource-detail')">
+                                   <li draggable="true" class="drag-li">
+                                       <span class="iconfont icon-zhuji"  style="vertical-align: -1px;"></span>
+                                       <span class="resource-name">主机</span>
+                                   </li>
+                                   <li draggable="true" class="drag-li">
+                                       <span class="iconfont icon-siyouwangluo"  style="vertical-align: -1px;"></span>
+                                       <span class="resource-name">私有网络</span>
+                                   </li>
+                               </ul>
+                           </li>
+                           <li class="resource-li" style="cursor:pointer; text-indent: 10px;" ng-click="toggleList($event)">
+                               <a>存储</a>
+                               <ul class="resource-detail" style="display: block;" ng-init="resourceHide('.resource-detail')">
+                                   <li draggable="true" class="drag-li">
+                                       <span class="iconfont icon-yingpan"  style="vertical-align: -1px;"></span>
+                                       <span class="resource-name">硬盘</span>
+                                   </li>
+                                   <li draggable="true" class="drag-li">
+                                       <span class="iconfont icon-nas"  style="vertical-align: -1px;"></span>
+                                       <span class="resource-name">NAS</span>
+                                   </li>
+                               </ul>
+                           </li>
+                       </ul>
+                   </div>
+               </div>
+               <div class="col-lg-7">
+                   <div class="canvas-container">
+                       <canvas id="canvas" height="715"></canvas>
+                       <p class="tooltip-content fangdaTooltip">当前已经放大到最大!</p>
+                       <p class="tooltip-content  suoxiaoTooltip">当前已经缩小到最小!</p>
+                       <p class="tooltip-content  drag-tooltip"></p>
+                       <div class="toolbar">
+                               <button class="btn btn-default btn-info {{item.class}} {{item.disabled}}" ng-repeat="item in toolbar" ng-click="operation(item.text)">
+                                   <span class="iconfont {{item.icon}}"></span>
+                                   <span>{{item.text}}</span>
+                               </button>
+                       </div>
+                       <div id="contextmenu">
+                           <ul style="margin-bottom: 0px;">
+                               <li><a>顺时针旋转</a></li>
+                               <li><a>逆时针旋转</a></li>
+                               <li><a>撤销上一次操作</a></li>
+                               <li><a>删除该节点</a></li>
+                           </ul>
+                       </div>
+                   </div>
+               </div>
+               <div class="col-lg-3" style="padding: 0 20px;">
+                   <div class="description">
+                            <nav class="navbar navbar-default" role="navigation">
+                                <div class="">
+                                   <ul class="nav navbar-nav tabs">
+                                       <li class="active tab ziyuanpeizhi" ng-click="modify('资源配置')">
+                                           <a>
+                                               <span class="iconfont icon-ziyuanpeizhi" ></span>
+                                               <span style="margin-left: 2px">资源配置</span>
+                                           </a>
+                                       </li>
+                                       <li class="tab gaojixuanxiang" ng-click="modify('高级选项')">
+                                           <a>
+                                               <span class="iconfont icon-gaojixuanxiang"></span>
+                                               <span style="margin-left: 2px">高级选项</span>
+                                           </a>
+                                       </li>
+                                   </ul>
+                                </div>
+                            </nav>
+                       <div class="configuration">
+                               <ul class="configuration-ul ziyuanpeizhi-ul">
+                               </ul>
+                               <ul class="configuration-ul gaojixuanxiang-ul">
+                               </ul>
+                           </div>
+
+                               <!--<li class="configuration-item ziyuanpeizhi-item">-->
+                                   <!--<span class="configuration-key">名称</span>-->
+                                   <!--<div class="configuration-value">-->
+                                       <!--<span class="name-value">1</span>-->
+                                       <!--<span class="iconfont icon-bianji"></span>-->
+                                   <!--</div>-->
+                               <!--</li>-->
+                               <!--<li class="configuration-item ziyuanpeizhi-item">-->
+                                   <!--<span class="configuration-key">描述</span>-->
+                                   <!--<div class="configuration-value">-->
+                                       <!--<span class="discription-value">2</span>-->
+                                       <!--<span class="iconfont icon-bianji"></span>-->
+                                   <!--</div>-->
+                               <!--</li>-->
+
+                       </div>
+                   </div>
+               </div>
+           </div>
+       </div>
+       <div class="modal fade " id="submitModal" tabindex = "-1" role="dialog" aria-labelledby="submitModalLabel" aria-hidden="true">
+           <div class="modal-content modal-layout">
+               <div class="modal-header modal-header-style">
+                   <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                   <h4 class="modal-title" id="submitModalLabel">
+                       提交
+                   </h4>
+               </div>
+               <div class="modal-body" style="padding: 30px 20px 0px 20px;">
+                       <form class="bs-example form-horizontal form-validation" name="createTemplate" novalidate>
+                           <div class="form-group">
+                               <label for="id" class="col-lg-2 col-lg-offset-1 control-label">ID<span>*</span></label>
+                               <div class="col-lg-7">
+                                    <input type="text" name="id" class="form-control" id="id" placeholder="modal" required ng-model="id">
+                               </div>
+                           </div>
+                           <div class="form-group">
+                               <label for="name" class="col-lg-2 col-lg-offset-1 control-label">名称<span>*</span></label>
+                               <div class="col-lg-7">
+                                   <input type="text" name="name" class="form-control" id="name" required ng-model="name">
+                               </div>
+                           </div>
+                           <div class="form-group">
+                               <label for="status" class="col-lg-2 col-lg-offset-1 control-label">状态<span>*</span></label>
+                               <div style="width: 110px;" class="col-lg-2">
+                                   <select  class="form-control" name="select" id="status">
+                                       <option selected="selected">可用</option>
+                                       <option>不可用</option>
+                                   </select>
+                               </div>
+                           </div>
+                           <div class="form-group">
+                               <label for="name" class="col-lg-2 col-lg-offset-1 control-label" style="padding-left: 0px;">创建时间</label>
+                               <div class="col-lg-7">
+                                   <input type="text" class="form-control" id="time" readonly ng-model="createTime">
+                               </div>
+                           </div>
+                           <div class="form-group">
+                               <label for="description" class="col-lg-2 col-lg-offset-1 control-label" required="required">描述</label>
+                               <div class="col-lg-7">
+                                   <textarea type="text" class="form-control" name="description" id="description" ng-model="description"></textarea>
+                               </div>
+                           </div>
+                           <div class="pull-right" style="margin-right: 80px;">
+                               <button type="button" class="btn btn-default btn-info btn-sm" data-dismiss="modal" ng-click="click1()">
+                                   取消
+                               </button>
+                               <button type="submit" class="btn btn-default btn-info btn-sm" data-dismiss="modal"  ng-disabled="createTemplate.$invalid"  ng-click="submitTemplate(id, name, status, createTime, description)">
+                                   确定
+                               </button>
+                           </div>
+                       </form>
+           </div>
+       </div>
+   </div>
